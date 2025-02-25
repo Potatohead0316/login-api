@@ -27,7 +27,9 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'You are not authorized as customer user', success: false });
         }
 
-        res.json({ message: 'login successful!', success: true })
+        const { password: _, ...userWithoutPassword } = user.toObject(); 
+
+        res.json({ message: 'Login successful!', success: true, data: userWithoutPassword });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
