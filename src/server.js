@@ -16,6 +16,7 @@ mongoose.connect('mongodb://localhost:27017/personal-db', {
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/user', require('./routes/user')); 
+app.use('/api/book', require('./routes/book')); 
 
 app.get('/', (req, res) => {
   res.send('API is running...');

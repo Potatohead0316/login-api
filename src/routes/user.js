@@ -3,24 +3,25 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const User = require('../models/User');
+const { errorResponse, successResponse } = require('../helper/helper');
 
 router.get('/:userId', async (req, res) => {
     const {userId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({ message: 'Invalid user ID format', success: false });
+        return errorResponse(res, 400, 'Invalid user ID format');
     }
 
     try {
         const user = await User.findById(userId).select('-password');
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found', success: false });
+            return errorResponse(res, 404, 'User not found');
         }
 
-        res.json({ success: true, user });
+        successResponse(res, '', user);
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error', success: false });
+        errorResponse(res, 500, 'Internal server error');
     }
 });
 

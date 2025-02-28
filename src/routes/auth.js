@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const { errorResponse, successResponse } = require('../helper/helper');
 
 router.post('/login', async (req, res) => {
     const { username, password, role } = req.body;
@@ -11,27 +12,28 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne(query);
 
         if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials', success: false });
+            return errorResponse(res, 404, 'User not found');
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(400).json({ message: 'Invalid credentials', success: false });
+            return errorResponse(res, 400, 'Invalid credentials');
         }
 
         if (role === 'admin' && user.role !== 'admin') {
-            return res.status(400).json({ message: 'You are not authorized as admin', success: false });
+            return errorResponse(res, 403, 'You are not authorized as admin')
         }
 
         if (role === 'user' && user.role !== 'user') {
-            return res.status(400).json({ message: 'You are not authorized as customer user', success: false });
+            return errorResponse(res, 403, 'You are not authorized as admin')
         }
 
         const { password: _, ...userWithoutPassword } = user.toObject(); 
 
-        res.json({ message: 'Login successful!', success: true, data: userWithoutPassword });
+        successResponse(res, 'Login successful!', userWithoutPassword);
+        
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        return errorResponse(res, 500, 'Internal server error')
     }
 });
 
