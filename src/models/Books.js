@@ -6,6 +6,6 @@ const bookSchema = new mongoose.Schema({
     year: { type: Number, required: true },
     genre: { type: String, required: true },
     image: { type: String, required: true }
-})
+}, {versionKey: false})
 
 module.exports = mongoose.model('Book', bookSchema)
