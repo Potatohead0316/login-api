@@ -50,7 +50,7 @@ router.delete('/delete-book/:id', async (req, res) => {
 
 router.put('/update-book/:id', async (req, res) => {
     const { id } = req.params
-    const updateData = req.body  // Use all provided fields
+    const updateData = req.body  
 
     try {
         if (Object.keys(updateData).length === 0) {

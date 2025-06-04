@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
+
 app.use(express.json());
 
 // Connect to MongoDB
@@ -15,6 +18,7 @@ mongoose.connect('mongodb://localhost:27017/personal-db', {
 
 // Routes
 app.use('/api/auth', require('./routes/authentication'));
+app.use('/api/register', require('./routes/register'));
 app.use('/api/user', require('./routes/user')); 
 app.use('/api/book', require('./routes/book')); 
 
