@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: 'http://localhost:3002'
 }));
 
 app.use(express.json());
@@ -20,7 +20,6 @@ mongoose.connect('mongodb://localhost:27017/personal-db', {
 app.use('/api/auth', require('./routes/authentication'));
 app.use('/api/register', require('./routes/register'));
 app.use('/api/user', require('./routes/user')); 
-app.use('/api/book', require('./routes/book')); 
 
 app.get('/', (req, res) => {
   res.send('API is running...');
