@@ -10,6 +10,8 @@ app.use(cors({
 
 app.use(express.json());
 
+connectDB();
+
 async function connectDB() {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
@@ -23,10 +25,10 @@ async function connectDB() {
   }
 }
 
-connectDB();
 
 // Routes
 app.use('/api/auth', require('./routes/userRoute'));
+app.use('/api/task', require('./routes/taskRoute'));
 
 app.get('/', (req, res) => {
   res.send('API is running...');

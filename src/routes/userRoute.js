@@ -7,6 +7,7 @@ const { errorResponse, successResponse } = require('../helper/helper');
 const verifyToken = require('../middleware/authMiddleWare');
 const mongoose = require('mongoose');
 
+
 router.get('/secret', verifyToken, (req, res) => { // trigger this test api to determine whether the token expires within the given time/duration
     return res.json({
         message: `You have accessed a protected route as ${req.user.role}`,
@@ -43,11 +44,13 @@ router.post('/register', async (req, res) => {
         if (existingUser) {
             return errorResponse(res, 400, 'Username already exists');
         }
+        
         const newUser = new User({
             username,
             password: username,
             role
         });
+
         await newUser.save();
         const { password: _, ...userWithoutPassword } = newUser.toObject();
         successResponse(res, 'User registered successfully!', userWithoutPassword);
